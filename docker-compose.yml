@@ -1,0 +1,45 @@
+version: '3.3'
+
+services:
+  mongodb:
+    # Warning: version 5.0.1 requires so called AVX support, refer to
+    # https://www.mongodb.com/community/forums/t/mongodb-5-0-cpu-intel-g4650-compatibility/116610/2
+    # https://github.com/docker-library/mongo/issues/485#issuecomment-891991814
+    image: mongo:4.4.7
+    restart: always
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ${MONGO_INITDB_ROOT_USERNAME}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_INITDB_ROOT_PASSWORD}
+    volumes:
+      - ./mongo-data:/data/db
+    ports:
+      - ${MONGO_PORT}:27017
+
+  parse-server:
+    image: parseplatform/parse-server
+    restart: always
+    ports:
+      - ${PARSE_PORT}:1337
+    depends_on:
+      - 'mongodb'
+    command: --appId ${PARSE_APPLICATION_ID} --masterKey ${PARSE_MASTER_KEY} --databaseURI mongodb://${MONGO_INITDB_ROOT_USERNAME}:${MONGO_INITDB_ROOT_PASSWORD}@${PARSE_SERVER_FQDN}:${MONGO_PORT}
+
+  # At some point the demo will also need the following service
+  imuv:
+    build:
+      context: https://github.com/VCityTeam/UD-Imuv-docker.git
+      dockerfile: Context/Dockerfile
+    volumes:
+      - ./env.json:/UD-Imuv/server/env.json
+    ports:
+      - 443:8000
+  # Refer to
+  #   https://github.com/VCityTeam/UD-Imuv-docker/blob/master/Readme.md
+  # but some env.json will be needed and for this the imuv application
+  # will need to be changed to accept it's configuration at launch time
+  # as opposed to (docker) build time.
+  # Additionnaly this env.json configuration file will need to integrate
+  # the above parse-server parameters PARSE_APPLICATION_ID, PARSE_MASTER_KEY
+  # as well as PARSE_PORT. For this either a file template generator will
+  # be needed or imuv (docker container) will need to accept further CLI
+  # arguments (the later probably being the hardest way to do it).

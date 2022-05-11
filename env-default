@@ -1,0 +1,16 @@
+### Underlying mongo database
+
+MONGO_INITDB_ROOT_USERNAME=<mongo db root account name>
+MONGO_INITDB_ROOT_PASSWORD=<associated password>
+MONGO_PORT=27017
+
+### Exposed parse server
+
+PARSE_SERVER_FQDN=<the deployment server fully qualified domain name>
+PARSE_APPLICATION_ID=<your application identifier>
+PARSE_MASTER_KEY=<some long and cryptic and stong generated key>
+PARSE_PORT=1337
+
+### IMU
+
+IMU_ENV_PATH=<PATH>
