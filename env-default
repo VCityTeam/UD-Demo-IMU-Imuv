@@ -6,7 +6,8 @@ MONGO_PORT=27017
 
 ### Exposed parse server
 
-PARSE_SERVER_URL=<the deployment server fully qualified domain name>
+PARSE_SERVER_FQDN=<the deployment server fully qualified domain name. Eecample: your.parse.server>
+PARSE_SERVER_URL=<the url of the parse server. Example: http://your.parse.server:1337/parse>
 PARSE_APP_ID=<your application identifier>
 PARSE_MASTER_KEY=<some long and cryptic and stong generated key>
 PARSE_PORT=1337
