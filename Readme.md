@@ -1,3 +1,42 @@
+## Redirection of port outside the ud-demo-imu_imuv network
+
+```mermaid
+graph RL
+    subgraph localhost
+    subgraph ud-demo-imu_imuv network
+    imuv-->|port|imuvport(8000/tcp)
+    parse[parse-server]-->|port|parseport(1337/tcp)
+    mdb[(mongodb)]-->|port|mdbport(27017/tcp)
+    end
+    imuvport-->|redirect|rdrimuvport(0.0.0.0:IMUV_PORT)
+    parseport-->|redirect|rdrparseport(0.0.0.0:PARSE_PORT)
+    mdbport-->|redirect|rdrmongoport(0.0.0.0:MONGO_PORT)
+    end
+```
+
+There is three services :
+
+- imuv : game
+- parse : authentification
+- mongo : database
+
+There are in a docker network and can communicate within that network.
+We can redirect the communication ports when we want to serve them in the machine (localhost). This is very useful especially for the imuv service which by default is on port 8000 and when for example we want to deploy the service on port 443 (default port for the https protocol).
+
+## Connection between services
+
+```mermaid
+sequenceDiagram
+    actor user
+    user->>imuv : https://imuv_domain_name
+    imuv->>+parse-server: http://parse-server:1337/parse
+    parse-server->>+mongodb:mongodb://usr:pwd&#64;mongodb:27017
+    mongodb->>-parse-server:mongodb://usr:pwd&#64;mongodb:27017
+    parse-server->>-imuv: http://parse-server:1337/parse
+    imuv->>user : https://imuv_domain_name
+```
+
+Here is the classic path of how information flows to receive data or change data in the user database via the imuv client.
 
 ## Running the demo for the first time
 
@@ -10,21 +49,21 @@ command installed.
 Copy the [`env-default`](env-default) to `.env` file docker-compose environment
 file and customize it to fit your needs.
 
->>**Caveat emptor**:
->>when starting the server for the first time make sure to
-  start with a clean slate database by applying a command of the form
+> > **Caveat emptor**:
+> > when starting the server for the first time make sure to
+> > start with a clean slate database by applying a command of the form
 
-  ```bash
-  rm -fr mongo-data/[A-z]*
-  ```
+```bash
+rm -fr mongo-data/[A-z]*
+```
 
->>Otherwise, if the `mongo-data` directory happens to have a data base image
-(stored in a previous run and hidden by the `.gitignore`) with a different
-pair of `username/password` as the one provided in the customized `.env` file,
-the mongo database won't complain on still launch smoothly.
-Yet the `username/password` won't be the ones provided in the `.env` file
-... but the ones encountered in the saved image of the database.
-And this will most often bite you down the road. :-/
+> > Otherwise, if the `mongo-data` directory happens to have a data base image
+> > (stored in a previous run and hidden by the `.gitignore`) with a different
+> > pair of `username/password` as the one provided in the customized `.env` file,
+> > the mongo database won't complain on still launch smoothly.
+> > Yet the `username/password` won't be the ones provided in the `.env` file
+> > ... but the ones encountered in the saved image of the database.
+> > And this will most often bite you down the road. :-/
 
 In order to launch the demo (from a terminal) clone this repository and
 change the directory to be the one holding this Readme.md file and run the
@@ -73,6 +112,7 @@ docker run -it --rm  mongo:4.4.7 mongo --host <FQDN>:1338 -u mygogodancer -p myg
 ```
 
 ### Running individual docker commands
+
 In case some manual troubleshooting is required, containers can be
 run from cli with the following commands
 
@@ -80,9 +120,9 @@ run from cli with the following commands
 # Make sure we start with a clean slate database.
 # WARNING: if you forget this clean-up and your database
 #   was set up with different username/password, mongodb won't
-#   complain on launch. Yet the password won't be the ones 
+#   complain on launch. Yet the password won't be the ones
 #   provided as environment variables...but the ones encountered
-# in the saved db. 
+# in the saved db.
 # And this will burn you quite some time down the road. :-/
 rm -fr mongo-data/[A-z]*
 docker network create imuv-net

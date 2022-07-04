@@ -11,3 +11,5 @@ PARSE_SERVER_URL=<the url of the parse server. Default: http://parse-server:1337
 PARSE_APP_ID=<your application identifier>
 PARSE_MASTER_KEY=<some long and cryptic and stong generated key>
 PARSE_PORT=1337
+
+IMUV_PORT=443
