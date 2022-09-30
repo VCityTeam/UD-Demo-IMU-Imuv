@@ -30,7 +30,7 @@ services:
       context: https://github.com/VCityTeam/UD-Imuv-docker.git
       dockerfile: Context/Dockerfile
       args:
-        - checkoutName=31-tableau-blanc #branch or sha of commit
+        - checkoutName=master #branch or sha of commit
     ports:
       - ${IMUV_PORT}:8000
     env_file:
