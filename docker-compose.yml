@@ -1,4 +1,4 @@
-version: '3.3'
+version: "3.3"
 
 services:
   mongodb:
@@ -21,7 +21,7 @@ services:
     ports:
       - ${PARSE_PORT}:1337
     depends_on:
-      - 'mongodb'
+      - "mongodb"
     command: --appId ${PARSE_APP_ID} --masterKey ${PARSE_MASTER_KEY} --databaseURI mongodb://${MONGO_INITDB_ROOT_USERNAME}:${MONGO_INITDB_ROOT_PASSWORD}@${PARSE_SERVER_FQDN}:${MONGO_PORT}
 
   # At some point the demo will also need the following service
@@ -30,7 +30,7 @@ services:
       context: https://github.com/VCityTeam/UD-Imuv-docker.git
       dockerfile: Context/Dockerfile
       args:
-        - checkoutName=master #branch or sha of commit
+        - checkoutName=31-tableau-blanc #branch or sha of commit
     ports:
       - ${IMUV_PORT}:8000
     env_file:
@@ -45,3 +45,11 @@ services:
   # as well as PARSE_PORT. For this either a file template generator will
   # be needed or imuv (docker container) will need to accept further CLI
   # arguments (the later probably being the hardest way to do it).
+
+  wbo:
+    image: lovasoa/wbo
+    restart: always
+    ports:
+      - ${WBO_PORT}:80
+    volumes:
+      - ./wbo-boards:/opt/app/server-data
