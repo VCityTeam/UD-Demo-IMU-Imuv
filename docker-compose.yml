@@ -32,7 +32,7 @@ services:
       args:
         - checkoutName=master #branch or sha of commit
     ports:
-      - ${IMUV_PORT}:8000
+      - ${IMUV_PORT}:${IMUV_PORT}
     env_file:
       - .env
   # Refer to
