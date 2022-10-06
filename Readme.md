@@ -16,11 +16,12 @@ graph RL
     end
 ```
 
-There is three services :
+There is four services :
 
 - imuv : game
 - parse : authentification
 - mongo : database
+- whitebophir : whiteboard
 
 There are in a docker network and can communicate within that network.
 We can redirect the communication ports when we want to serve them in the machine (localhost). This is very useful especially for the imuv service which by default is on port 8000 and when for example we want to deploy the service on port 443 (default port for the https protocol).
