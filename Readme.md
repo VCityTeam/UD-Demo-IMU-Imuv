@@ -7,10 +7,12 @@ graph RL
     imuv-->|port|imuvport(8000/tcp)
     parse[parse-server]-->|port|parseport(1337/tcp)
     mdb[(mongodb)]-->|port|mdbport(27017/tcp)
+    wbo[wbo]-->|port|wbop(5001/tcp)
     end
     imuvport-->|redirect|rdrimuvport(0.0.0.0:IMUV_PORT)
     parseport-->|redirect|rdrparseport(0.0.0.0:PARSE_PORT)
     mdbport-->|redirect|rdrmongoport(0.0.0.0:MONGO_PORT)
+    wbop-->|redirect|rdrwbop(0.0.0.0:WBO_PORT)
     end
 ```
 
@@ -29,6 +31,8 @@ We can redirect the communication ports when we want to serve them in the machin
 sequenceDiagram
     actor user
     user->>imuv : https://imuv_domain_name
+    imuv->>+wbo: http://wbo:5001/boards
+    wbo->>-imuv: http://wbo:5001/boards
     imuv->>+parse-server: http://parse-server:1337/parse
     parse-server->>+mongodb:mongodb://usr:pwd&#64;mongodb:27017
     mongodb->>-parse-server:mongodb://usr:pwd&#64;mongodb:27017
@@ -65,12 +69,25 @@ rm -fr mongo-data/[A-z]*
 > > ... but the ones encountered in the saved image of the database.
 > > And this will most often bite you down the road. :-/
 
+Create a folder wich contains the whiteboards json saved with theses commands :
+
+```bash
+mkdir wbo-boards # Create a directory that will contain your whiteboards
+chown -R 1000:1000 wbo-boards # Make this directory accessible to WBO
+```
+
 In order to launch the demo (from a terminal) clone this repository and
 change the directory to be the one holding this Readme.md file and run the
 following command (the "-d" is to run the command in background):
 
 ```bash
 docker-compose up -d
+```
+
+If you want run only certain services, you can use the following command :
+
+```bash
+docker-compose up -d name_service_1 name_service_2 ...
 ```
 
 ## Checking the installation

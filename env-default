@@ -13,7 +13,7 @@ PARSE_MASTER_KEY=<some long and cryptic and stong generated key>
 PARSE_PORT=1337
 
 IMUV_PORT=443
-IMUV_CLIENT_FOLDER=../client
 JITSI_PUBLIC_URL=https://meet.jit.si
 
 WBO_PORT=5001
+WBO_PUBLIC_URL=https://wbo:5001/boards
