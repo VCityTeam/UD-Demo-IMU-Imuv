@@ -24,16 +24,14 @@ There is four services :
 - whitebophir : whiteboard
 
 There are in a docker network and can communicate within that network.
-We can redirect the communication ports when we want to serve them in the machine (localhost). This is very useful especially for the imuv service which by default is on port 8000 and when for example we want to deploy the service on port 443 (default port for the https protocol).
+We can redirect the communication ports when we want to serve them in the machine (localhost).
 
-## Connection between services
+## Sequence diagram of an user authentication
 
 ```mermaid
 sequenceDiagram
     actor user
     user->>imuv : https://imuv_domain_name
-    imuv->>+wbo: http://wbo:5001/boards
-    wbo->>-imuv: http://wbo:5001/boards
     imuv->>+parse-server: http://parse-server:1337/parse
     parse-server->>+mongodb:mongodb://usr:pwd&#64;mongodb:27017
     mongodb->>-parse-server:mongodb://usr:pwd&#64;mongodb:27017
@@ -45,50 +43,70 @@ Here is the classic path of how information flows to receive data or change data
 
 ## Running the demo for the first time
 
-The only pre-requisite is to have a host with a running
-[docker daemon](https://docs.docker.com/)
-(on the CLI try running `docker ps`) and the
-[docker compose](https://docs.docker.com/compose/)
-command installed.
+The only pre-requisite is to have a host with a running [docker daemon](https://docs.docker.com/) (on the CLI try running `docker ps`) and the [docker compose](https://docs.docker.com/compose/) command installed.
+
+## Setup the environment variables
 
 Copy the [`env-default`](env-default) to `.env` file docker-compose environment
 file and customize it to fit your needs.
 
-> > **Caveat emptor**:
-> > when starting the server for the first time make sure to
-> > start with a clean slate database by applying a command of the form
+| VARIABLES                  | DESCRIPTION                                                                                                                    |
+| -------------------------- | ------------------------------------------------------------------------------------------------------------------------------ |
+| MONGO_INITDB_ROOT_USERNAME | The username of the root user of the mongo database                                                                            |
+| MONGO_INITDB_ROOT_PASSWORD | The password of the root user of the mongo database                                                                            |
+| MONGO_PORT                 | The port of the mongo database                                                                                                 |
+| MONGO_HOST                 | Hostname of the mongo database URI                                                                                             |
+| PARSE_PORT                 | The port of the parse-server                                                                                                   |
+| IMUV_PORT                  | The port of the imuv game                                                                                                      |
+| WBO_PORT                   | The port of the wbo service (whiteboard)                                                                                       |
+| PARSE_APP_ID               | The application id of the parse-server. Used by the [IMUV](https://github.com/VCityTeam/UD-Imuv#set-the-environment-variables) |
+| PARSE_MASTER_KEY           | The master key of the parse-server. Used by the [IMUV](https://github.com/VCityTeam/UD-Imuv#set-the-environment-variables)     |
+| JITSI_PUBLIC_URL           | Used by the [IMUV](https://github.com/VCityTeam/UD-Imuv#set-the-environment-variables)                                         |
+| WBO_PUBLIC_URL             | Used by the [IMUV](https://github.com/VCityTeam/UD-Imuv#set-the-environment-variables).                                        |
+| PARSE_SERVER_URL           | Used by the [IMUV](https://github.com/VCityTeam/UD-Imuv#set-the-environment-variables)                                         |
+
+> Note : Unlike IMUV, we use our own wbo service. So WBO_PUBLIC_URL point to localhost (not dev server).
+
+## Start the demo
+
+Clean volumes (optional):
 
 ```bash
 rm -fr mongo-data/[A-z]*
+rm -fr wbo-boards/[A-z]*
 ```
 
-> > Otherwise, if the `mongo-data` directory happens to have a data base image
-> > (stored in a previous run and hidden by the `.gitignore`) with a different
-> > pair of `username/password` as the one provided in the customized `.env` file,
-> > the mongo database won't complain on still launch smoothly.
-> > Yet the `username/password` won't be the ones provided in the `.env` file
-> > ... but the ones encountered in the saved image of the database.
-> > And this will most often bite you down the road. :-/
+> Otherwise, if the `mongo-data` directory happens to have a data base image
+> (stored in a previous run and hidden by the `.gitignore`) with a different
+> pair of `username/password` as the one provided in the customized `.env` file,
+> the mongo database won't complain on still launch smoothly.
+> Yet the `username/password` won't be the ones provided in the `.env` file
+> ... but the ones encountered in the saved image of the database.
+> And this will most often bite you down the road. :-/
 
-Create a folder wich contains the whiteboards json saved with theses commands :
+Create a folder wich contains the whiteboards json saved with theses commands:
 
 ```bash
 mkdir wbo-boards # Create a directory that will contain your whiteboards
 chown -R 1000:1000 wbo-boards # Make this directory accessible to WBO
 ```
 
-In order to launch the demo (from a terminal) clone this repository and
-change the directory to be the one holding this Readme.md file and run the
-following command (the "-d" is to run the command in background):
+Then start the demo with the following command (-d is for detached mode):
 
 ```bash
 docker-compose up -d
 ```
 
-If you want run only certain services, you can use the following command :
+If you want run only certain services, you can use the following command:
 
 ```bash
 docker-compose up -d name_service_1 name_service_2 ...
+```
+
+<p id="run_parse_mongo">For example running parse-server and mongodb:</p>
+
+```bash
+docker-compose up -d parse-server mongodb
 ```
 
 ## Checking the installation

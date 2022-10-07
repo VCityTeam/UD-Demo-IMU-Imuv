@@ -22,7 +22,7 @@ services:
       - ${PARSE_PORT}:1337
     depends_on:
       - "mongodb"
-    command: --appId ${PARSE_APP_ID} --masterKey ${PARSE_MASTER_KEY} --databaseURI mongodb://${MONGO_INITDB_ROOT_USERNAME}:${MONGO_INITDB_ROOT_PASSWORD}@${PARSE_SERVER_FQDN}:${MONGO_PORT}
+    command: --appId ${PARSE_APP_ID} --masterKey ${PARSE_MASTER_KEY} --databaseURI mongodb://${MONGO_INITDB_ROOT_USERNAME}:${MONGO_INITDB_ROOT_PASSWORD}@${MONGO_HOST}:${MONGO_PORT}
 
   wbo:
     image: lovasoa/wbo

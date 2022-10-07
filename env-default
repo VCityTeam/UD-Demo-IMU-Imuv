@@ -6,7 +6,7 @@ MONGO_PORT=27017
 
 ### Exposed parse server
 
-PARSE_SERVER_FQDN=<the deployment server fully qualified domain name. Default: mongodb>
+MONGO_HOST=<host of mongo part of the uri. Default: mongodb>
 PARSE_APP_ID=<your application identifier> # also use in IMUV to connect to parse service
 PARSE_MASTER_KEY=<some long and cryptic and stong generated key> # also use in IMUV to connect to parse service
 PARSE_PORT=1337
