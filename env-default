@@ -1,14 +1,14 @@
 ### Underlying mongo database
 
-MONGO_INITDB_ROOT_USERNAME=<mongo db root account name>
-MONGO_INITDB_ROOT_PASSWORD=<associated password>
+MONGO_INITDB_ROOT_USERNAME=default_username
+MONGO_INITDB_ROOT_PASSWORD=default_password
 MONGO_PORT=27017
 
 ### Exposed parse server
 
-MONGO_HOST=<host of mongo part of the uri. Default: mongodb>
-PARSE_APP_ID=<your application identifier> # also use in IMUV to connect to parse service
-PARSE_MASTER_KEY=<some long and cryptic and stong generated key> # also use in IMUV to connect to parse service
+MONGO_HOST=mongodb
+PARSE_APP_ID=default_application_identifier # also use in IMUV to connect to parse service
+PARSE_MASTER_KEY=default_some_long_and_cryptic_and_stong_generated_key # also use in IMUV to connect to parse service
 PARSE_PORT=1337
 
 ### Exposed imuv
@@ -21,6 +21,6 @@ WBO_PORT=5001
 
 # Used by IMUV
 
-JITSI_PUBLIC_URL=<the url of the jitsi server. Default: https://meet.jit.si>
-WBO_PUBLIC_URL=<the url of the whitebophir server. Default: http://localhost:5001/boards>
-PARSE_SERVER_URL=<the url of the parse server. Default: http://parse-server:1337/parse>
+JITSI_PUBLIC_URL=https://meet.jit.si
+WBO_PUBLIC_URL=http://localhost:5001/boards
+PARSE_SERVER_URL=http://parse-server:1337/parse
