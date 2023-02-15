@@ -10,7 +10,7 @@ jobs:
       script:
         - cp env-default .env
         - mkdir wbo-boards
-        - chown -R 1000:1000 wbo-boards
+        - sudo chown -R 1000:1000 wbo-boards
         - docker-compose build
         - docker-compose up -d
         # - curl -X POST -H "X-Parse-Application-Id: my_parse_app_id" -H "Content-Type: application/json" -d '{"score":1337,"playerName":"John Doe","cheatMode":false}' http://localhost:1337/parse/classes/GameScore
