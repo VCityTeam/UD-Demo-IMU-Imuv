@@ -13,7 +13,7 @@ jobs:
         - chown -R 1000:1000 wbo-boards
         - docker-compose build
         - docker-compose up -d
-        - curl -X POST -H "X-Parse-Application-Id: my_parse_app_id" -H "Content-Type: application/json" -d '{"score":1337,"playerName":"John Doe","cheatMode":false}' http://localhost:1337/parse/classes/GameScore
-        - curl -X GET -H "X-Parse-Application-Id: my_parse_app_id" http://localhost:1337/parse/classes/GameScore/8A0YN6GkJ7
+        # - curl -X POST -H "X-Parse-Application-Id: my_parse_app_id" -H "Content-Type: application/json" -d '{"score":1337,"playerName":"John Doe","cheatMode":false}' http://localhost:1337/parse/classes/GameScore
+        # - curl -X GET -H "X-Parse-Application-Id: my_parse_app_id" http://localhost:1337/parse/classes/GameScore/8A0YN6GkJ7
         - travis_wait 2
         - docker-compose down
