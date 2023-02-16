@@ -18,6 +18,9 @@ jobs:
         - cp env-default .env
         - ldd /usr/lib/git-core/git-remote-https
         - ldd /lib/x86_64-linux-gnu/libcrypto.so.1.1
+        - /usr/lib/git-core/git-remote-https --version
+        - /usr/lib/git-core/git-remote-https -v
+        - /usr/lib/git-core/git-remote-https --help
         # CLEAN ME - /usr/lib/git-core/git-remote-https https://github.com/VCityTeam/UD-Imuv-docker.git
         - mkdir wbo-boards
         - sudo chown -R 1000:1000 wbo-boards
