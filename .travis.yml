@@ -5,17 +5,18 @@ services:
   - docker
 
 env:
+  # It seems that for docker-compose to be able to use a git url as context
+  # one needs to upgrade to version 2, refer to this issue
+  #    https://github.com/docker/compose/issues/8309#issuecomment-1400206290
+  # With docker-compose version 1.29.2 one gets the following error message
+  #    unable to 'git clone' to temporary context directory: 
+  #    error fetching: /usr/lib/git-core/git-remote-https: /tmp/_MEIXgF97G/libcrypto.so.1.1: 
+  #    version `OPENSSL_1_1_1' not found
   - DOCKER_COMPOSE_VERSION=v2.16.0
   
 before_install:
-  - docker --version
-  - docker-compose --version
-  # CLEAN ME - sudo apt-get update
-  # CLEAN ME - sudo apt-get -y install openssl
-  # CLEAN ME - openssl version
+  # Upgrading docker-compose
   - sudo rm /usr/local/bin/docker-compose
-  - uname -s
-  - uname -m
   - curl -L https://github.com/docker/compose/releases/download/${DOCKER_COMPOSE_VERSION}/docker-compose-`uname -s`-`uname -m` > docker-compose
   - chmod +x docker-compose
   - sudo mv docker-compose /usr/local/bin
@@ -27,12 +28,6 @@ jobs:
     - stage: Building and running imuv container
       script:
         - cp env-default .env
-        - ldd /usr/lib/git-core/git-remote-https
-        - ldd /lib/x86_64-linux-gnu/libcrypto.so.1.1
-        - /usr/lib/git-core/git-remote-https --version
-        - /usr/lib/git-core/git-remote-https -v
-        - /usr/lib/git-core/git-remote-https --help
-        # CLEAN ME - /usr/lib/git-core/git-remote-https https://github.com/VCityTeam/UD-Imuv-docker.git
         - mkdir wbo-boards
         - sudo chown -R 1000:1000 wbo-boards
         - docker-compose build
