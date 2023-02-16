@@ -35,8 +35,8 @@ services:
   # At some point the demo will also need the following service
   imuv:
     build:
-      context: https://github.com/VCityTeam/UD-Imuv-docker.git#:Context
-      # CLEAN ME dockerfile: Context/Dockerfile
+      context: https://github.com/VCityTeam/UD-Imuv-docker.git
+      dockerfile: Context/Dockerfile
       args:
         - checkoutName=master #branch or sha of commit
     ports:
