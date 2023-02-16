@@ -13,7 +13,7 @@ jobs:
     - stage: Building and running imuv container
       script:
         - cp env-default .env
-        - ldd git-remote-https
+        - ldd /usr/lib/git-core/git-remote-https
         - mkdir wbo-boards
         - sudo chown -R 1000:1000 wbo-boards
         - docker-compose build
