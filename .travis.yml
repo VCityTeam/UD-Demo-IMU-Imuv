@@ -15,7 +15,8 @@ env:
   - DOCKER_COMPOSE_VERSION=v2.16.0
   
 before_install:
-  # Upgrading docker-compose
+  # Upgrading docker-compose, refer to
+  #    https://docs.travis-ci.com/user/docker/?#using-docker-compose
   - sudo rm /usr/local/bin/docker-compose
   - curl -L https://github.com/docker/compose/releases/download/${DOCKER_COMPOSE_VERSION}/docker-compose-`uname -s`-`uname -m` > docker-compose
   - chmod +x docker-compose
