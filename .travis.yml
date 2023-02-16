@@ -7,8 +7,9 @@ services:
 before_install:
   - docker --version
   - docker-compose --version
-  - sudo apt-get update
-  - sudo apt-get -y install openssl
+  # - sudo apt-get update
+  # - sudo apt-get -y install openssl
+  # - openssl version
 
 jobs:
   include:
@@ -16,7 +17,7 @@ jobs:
       script:
         - cp env-default .env
         - ldd /usr/lib/git-core/git-remote-https
-        - openssl version
+        - ldd /lib/x86_64-linux-gnu/libcrypto.so.1.1
         - mkdir wbo-boards
         - sudo chown -R 1000:1000 wbo-boards
         - docker-compose build
