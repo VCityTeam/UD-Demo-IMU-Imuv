@@ -14,6 +14,7 @@ jobs:
       script:
         - cp env-default .env
         - ldd /usr/lib/git-core/git-remote-https
+        - openssl version
         - mkdir wbo-boards
         - sudo chown -R 1000:1000 wbo-boards
         - docker-compose build
