@@ -14,15 +14,19 @@ services:
       - ./mongo-data:/data/db
     ports:
       - ${MONGO_PORT}:27017
+    networks:
+      - mynetwork
 
   parse-server:
-    image: parseplatform/parse-server
+    image: parseplatform/parse-server:7.0.0
     restart: always
     ports:
       - ${PARSE_PORT}:1337
     depends_on:
       - "mongodb"
-    command: --appId ${PARSE_APP_ID} --masterKey ${PARSE_MASTER_KEY} --databaseURI mongodb://${MONGO_INITDB_ROOT_USERNAME}:${MONGO_INITDB_ROOT_PASSWORD}@${MONGO_HOST}:${MONGO_PORT}
+    command: --appId ${PARSE_APP_ID} --masterKey ${PARSE_MASTER_KEY} --databaseURI mongodb://${MONGO_INITDB_ROOT_USERNAME}:${MONGO_INITDB_ROOT_PASSWORD}@${MONGO_HOST}:${MONGO_PORT} --masterKeyIps ${PARSE_MASTER_KEY_IPS}
+    networks:
+      - mynetwork
 
   wbo:
     image: lovasoa/wbo
@@ -38,19 +42,28 @@ services:
       context: https://github.com/VCityTeam/UD-Imuv-docker.git
       dockerfile: Context/Dockerfile
       args:
-        - checkoutName=master #branch or sha of commit
+        - checkoutName=main #branch or sha of commit
     ports:
       - ${IMUV_PORT}:8000
     env_file:
       - .env
+    networks:
+      - mynetwork
 
-  # Refer to
-  #   https://github.com/VCityTeam/UD-Imuv-docker/blob/master/Readme.md
-  # but some env.json will be needed and for this the imuv application
-  # will need to be changed to accept it's configuration at launch time
-  # as opposed to (docker) build time.
-  # Additionnaly this env.json configuration file will need to integrate
-  # the above parse-server parameters PARSE_APP_ID, PARSE_MASTER_KEY
-  # as well as PARSE_PORT. For this either a file template generator will
-  # be needed or imuv (docker container) will need to accept further CLI
-  # arguments (the later probably being the hardest way to do it).
+networks:
+  mynetwork:
+    ipam:
+      driver: default
+      config:
+        - subnet: ${PARSE_MASTER_KEY_IPS}
+        - subnet: "2001:3984:3989::/64"
+    # Refer to
+    #   https://github.com/VCityTeam/UD-Imuv-docker/blob/master/Readme.md
+    # but some env.json will be needed and for this the imuv application
+    # will need to be changed to accept it's configuration at launch time
+    # as opposed to (docker) build time.
+    # Additionnaly this env.json configuration file will need to integrate
+    # the above parse-server parameters PARSE_APP_ID, PARSE_MASTER_KEY
+    # as well as PARSE_PORT. For this either a file template generator will
+    # be needed or imuv (docker container) will need to accept further CLI
+    # arguments (the later probably being the hardest way to do it).
