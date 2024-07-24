@@ -61,6 +61,7 @@ file and customize it to fit your needs.
 | WBO_PORT                   | The port of the wbo service (whiteboard)                                                                                       |
 | PARSE_APP_ID               | The application id of the parse-server. Used by the [IMUV](https://github.com/VCityTeam/UD-Imuv#set-the-environment-variables) |
 | PARSE_MASTER_KEY           | The master key of the parse-server. Used by the [IMUV](https://github.com/VCityTeam/UD-Imuv#set-the-environment-variables)     |
+| PARSE_MASTER_KEY_IPS       | Restrict masterKey to be used by only these ips.                                                                               |
 | JITSI_PUBLIC_URL           | Used by the [IMUV](https://github.com/VCityTeam/UD-Imuv#set-the-environment-variables)                                         |
 | WBO_PUBLIC_URL             | Used by the [IMUV](https://github.com/VCityTeam/UD-Imuv#set-the-environment-variables).                                        |
 | PARSE_SERVER_URL           | Used by the [IMUV](https://github.com/VCityTeam/UD-Imuv#set-the-environment-variables)                                         |
