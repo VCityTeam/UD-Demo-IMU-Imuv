@@ -94,19 +94,19 @@ chown -R 1000:1000 wbo-boards # Make this directory accessible to WBO
 Then start the demo with the following command (-d is for detached mode):
 
 ```bash
-docker-compose up -d
+docker compose up -d
 ```
 
 If you want run only certain services, you can use the following command:
 
 ```bash
-docker-compose up -d name_service_1 name_service_2 ...
+docker compose up -d name_service_1 name_service_2 ...
 ```
 
 <p id="run_parse_mongo">For example running parse-server and mongodb:</p>
 
 ```bash
-docker-compose up -d parse-server mongodb
+docker compose up -d parse-server mongodb
 ```
 
 ## Checking the installation
