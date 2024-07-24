@@ -9,6 +9,7 @@ MONGO_PORT=27017
 MONGO_HOST=mongodb
 PARSE_APP_ID=default_application_identifier # also use in IMUV to connect to parse service
 PARSE_MASTER_KEY=default_some_long_and_cryptic_and_stong_generated_key # also use in IMUV to connect to parse service
+PARSE_MASTER_KEY_IPS=172.42.24.0/24 # ips where parse accept queries. also use in IMUV to connect to parse service
 PARSE_PORT=1337
 
 ### Exposed imuv
