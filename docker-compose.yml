@@ -35,6 +35,8 @@ services:
       - ${WBO_PORT}:80
     volumes:
       - ./wbo-boards:/opt/app/server-data
+    networks:
+      - mynetwork
 
   # At some point the demo will also need the following service
   imuv:
@@ -57,6 +59,8 @@ networks:
       config:
         - subnet: ${PARSE_MASTER_KEY_IPS}
         - subnet: "2001:3984:3989::/64"
+    driver_opts:
+      com.docker.network.bridge.name: br-imuv
     # Refer to
     #   https://github.com/VCityTeam/UD-Imuv-docker/blob/master/Readme.md
     # but some env.json will be needed and for this the imuv application
